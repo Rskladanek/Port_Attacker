@@ -8,19 +8,16 @@
 ## Features
 
 ### Current Features
-- **Basic Port Attacks** – The tool currently supports simple port-based attacks, such as:
-  - TCP/UDP Flooding for resource exhaustion.
-  - Scanning for open ports and service stability testing.
-- **User-Friendly Menu** – A terminal-based menu interface for ease of use.
+- **TCP SYN Flood**: Overload a target's network with SYN packets to exhaust resources.
+- **HTTP GET Flood**: Send numerous HTTP GET requests to simulate a Distributed Denial of Service (DDoS) attack.
+- **Slowloris Attack**: Keep many sockets open to exhaust a server's resources.
+- **ICMP Flood**: Send a large number of ICMP Echo requests to a target.
 
 ### Planned Improvements
-- **Multiprocessing Support** – Enhancing attack efficiency by leveraging multiple processes.
-- **Proxy Integration** – Allowing traffic to be routed through proxy servers to bypass firewall detection.
-- **Advanced Attack Methods**:
-  - Slowloris attack.
-  - SYN Flooding.
-  - DNS Amplification.
-- **Evasion Techniques** – Implementing traffic masking and dynamic IP switching to circumvent network defenses.
+- **Multiprocessing Optimization**: Enhance attack efficiency using parallel processing.
+- **Proxy Integration**: Support for routing traffic through proxies for anonymity and bypassing defenses.
+- **Advanced Reporting**: Logs and analytics for attack results.
+- **Customizable Attack Parameters**: Fine-tune attack strategies for specific targets.
 
 ---
 
@@ -29,25 +26,54 @@
 ```
 Port_Attacker/
 ├── modules/
-│   ├── flooding.py    # Module for implementing flood-based attacks.
-│   ├── main.py        # Main entry point for running the program.
-│   ├── menu.py        # Menu interface for user interaction.
-├── .gitignore         # Files/paths to be ignored by Git.
+│   ├── blitzsyn.py    # TCP SYN Flood implementation.
+│   ├── webtsunami.py  # HTTP GET Flood implementation.
+│   ├── crawlslow.py   # Slowloris attack module.
+│   ├── pingstorm.py   # ICMP Flood implementation.
+├── main.py            # Main entry point for the program.
+├── menu.py            # Interactive menu interface.
 ├── README.md          # Project documentation.
+├── requirements.txt   # List of required Python libraries.
 ```
 
 ---
 
 ## Requirements
+
 - **Python**: >=3.9
-- **Libraries**:
-  - `multiprocessing` (built-in)
-  - `socket`
-  - Future dependencies: `requests`, `scapy`
+- **Dependencies**: Install via `requirements.txt`
+  ```bash
+  pip install -r requirements.txt
+  ```
+
+---
+
+## Usage
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/YourUsername/Port_Attacker.git
+   ```
+
+2. Navigate to the project directory:
+   ```bash
+   cd Port_Attacker
+   ```
+
+3. Run the program:
+   ```bash
+   python main.py
+   ```
+
+4. Follow the on-screen menu to choose an attack type.
+
+---
+
+## Fun Fact
+The Slowloris attack, implemented here, was named after the slow loris, a small and slow-moving primate, symbolizing the deliberate and slow nature of the attack.
 
 ---
 
 ## Disclaimer
-This project is intended for educational purposes and for testing the security of your own systems only. The author is not responsible for any misuse of this tool.
 
----
+This project is for educational purposes only. Do not use it to target networks or systems you do not own or have explicit permission to test. Misuse of this tool may lead to severe legal consequences. Use responsibly.

@@ -9,6 +9,7 @@ class Menu:
     Menu for launching different types of network attacks.
     """
 
+
     def __init__(self):
         self.options = {
             "1": self.tcp_syn_flood,
@@ -18,6 +19,7 @@ class Menu:
             "0": self.exit_menu,
         }
         self.running = True
+
 
     @staticmethod
     def display_menu():
@@ -30,6 +32,7 @@ class Menu:
         4. ICMP Flood (PingStorm)
         0. Exit
         """)
+
 
     def run(self):
         while self.running:
@@ -44,11 +47,13 @@ class Menu:
             else:
                 print("Invalid choice. Please try again.")
 
+
     def tcp_syn_flood(self):
         ip, port, workers, packets = self._get_attack_params(
             ["Enter target IP: ", "Enter target port: ", "Number of processes: ", "Packets per process: "])
         attacker = BlitzSyn(ip, port)
         attacker.attack(workers=workers, packets_per_worker=packets)
+
 
     def http_get_flood(self):
         url, workers, duration = self._get_attack_params(
@@ -56,17 +61,20 @@ class Menu:
         attacker = WebTsunami(url)
         attacker.attack(workers=workers, duration=duration)
 
+
     def slowloris_attack(self):
         ip, port, workers, sockets = self._get_attack_params(
             ["Enter target IP: ", "Enter target port: ", "Number of processes: ", "Sockets per process: "])
         attacker = CrawlSlow(ip, port)
         attacker.attack(workers=workers, sockets_per_worker=sockets)
 
+
     def icmp_flood(self):
         ip, workers, packets = self._get_attack_params(
             ["Enter target IP: ", "Number of processes: ", "Packets per process: "])
         attacker = PingStorm(ip)
         attacker.attack(workers=workers, packets_per_worker=packets)
+
 
     @staticmethod
     def _get_attack_params(prompts, types=None):
@@ -79,6 +87,7 @@ class Menu:
         if types is None:
             types = [str] * len(prompts)
         return [t(input(prompt)) for t, prompt in zip(types, prompts)]
+
 
     def exit_menu(self):
         print("Exiting program.")
