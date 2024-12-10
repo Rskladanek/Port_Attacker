@@ -62,7 +62,7 @@ Port_Attacker/
 
 3. Run the program:
    ```bash
-   python main.py
+   sudo python3 main.py
    ```
 
 4. Follow the on-screen menu to choose an attack type.
